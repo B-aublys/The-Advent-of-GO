@@ -10,7 +10,7 @@ import (
 func main() {
 	fmt.Println("Executing Advent of GO day 1")
 
-	file, err := os.Open("short_input.txt")
+	file, err := os.Open("input.txt")
 
 	if err != nil {
 		log.Fatal(err)
@@ -27,20 +27,28 @@ func main() {
 	for scanner.Scan() {
 		first_number = 0
 		last_number = 0
-		fmt.Println(scanner.Text())
 
+		// This can be done with one for loop
+		// But is a bit more efficient if we loop backwards for the
+		// Second number
+
+		// Iterate for the first number
 		for _, character := range scanner.Text() {
 			if character >= 49 && character <= 58 {
-				adjusted_number := character - 48
-				if first_number == 0 {
-					first_number = int(adjusted_number)
-					last_number = int(adjusted_number)
-				} else {
-					last_number = int(adjusted_number)
-				}
+				first_number = int(character - 48)
+				break
 			}
 		}
-		fmt.Println(first_number*10 + last_number)
+
+		// Iterate backwords for the second number
+		for i := len(scanner.Text()) - 1; i >= 0; i-- {
+			character := scanner.Text()[i]
+			if character >= 49 && character <= 58 {
+				last_number = int(character - 48)
+				break
+			}
+		}
+
 		result += first_number*10 + last_number
 	}
 
