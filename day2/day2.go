@@ -54,14 +54,17 @@ func main() {
 
 	actual_load := map[string]int{"red": 12, "green": 13, "blue": 14}
 	games_that_can_happen := 0
+	sum_powers_of_games := 0
 	for index, game := range game_maxes {
 		if actual_load["red"] >= game["red"] &&
 			actual_load["green"] >= game["green"] &&
 			actual_load["blue"] >= game["blue"] {
 			games_that_can_happen += index + 1
 		}
+		sum_powers_of_games += game["red"] * game["blue"] * game["green"]
 	}
 
-	fmt.Printf("The sum of the games that can happen are: %d", games_that_can_happen)
+	fmt.Printf("The sum of the games that can happen are: %d\n", games_that_can_happen)
+	fmt.Printf("The sum power of all games: %d\n", sum_powers_of_games)
 
 }
