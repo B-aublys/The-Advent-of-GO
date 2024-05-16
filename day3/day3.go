@@ -36,11 +36,13 @@ func (nb number_struct) to_keep(first_line, second_line, third_line string) bool
 		start_index = nb.start_index
 	}
 
-	if nb.end_index != len(first_line) {
+	if nb.end_index != len(first_line)-1 {
 		end_index = nb.end_index + 1
 	} else {
 		end_index = nb.end_index
 	}
+
+	fmt.Printf("Start: %d, End: %d", start_index, end_index)
 
 	for i := start_index; i <= end_index; i++ {
 		if is_special_character(first_line[i]) || is_special_character(third_line[i]) {
@@ -60,7 +62,7 @@ func is_special_character(a byte) bool {
 }
 
 func main() {
-	file, err := os.Open("short_input.txt")
+	file, err := os.Open("input.txt")
 
 	if err != nil {
 		log.Fatal(err)
@@ -100,18 +102,14 @@ func main() {
 		var current_number *number_struct
 
 		for index, character := range middle_line {
-			if character > 48 && character < 58 {
+			if character > 47 && character < 58 {
+				fmt.Println(string(character))
 				if current_number == nil {
-					current_number = &number_struct{value: 0, start_index: -1, end_index: -1}
+					current_number = &number_struct{value: 0, start_index: index, end_index: index}
 				}
 				current_number.value = current_number.value*10 + int(character) - 48
+				current_number.end_index = index
 
-				if current_number.start_index == -1 {
-					current_number.start_index = index
-					current_number.end_index = index
-				} else {
-					current_number.end_index = index
-				}
 			} else {
 				if current_number != nil {
 					numbers = append(numbers, current_number)
@@ -119,10 +117,16 @@ func main() {
 				}
 			}
 		}
+		// Some numbers are on the edge and the loop terminates before it can check
+		// if the number has ended, but we know it has, because the loop ended
+		if current_number != nil {
+			numbers = append(numbers, current_number)
+		}
 
 		for _, number := range numbers {
 			if number.to_keep(first_line, middle_line, third_line) {
 				result += number.value
+				fmt.Printf("Number selected: %d\n", number.value)
 			}
 		}
 
