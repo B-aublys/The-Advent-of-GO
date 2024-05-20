@@ -29,7 +29,7 @@ func (st *structure2) change_x(new_x int) {
 	st.x = new_x
 }
 
-func (st *structure2) String() string {
+func (st structure2) String() string {
 	return "hello mister"
 }
 

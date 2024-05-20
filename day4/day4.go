@@ -30,7 +30,6 @@ func newHailStone(x, y, x_delta, y_delta int) *HailStone {
 	return hailStone
 }
 
-// TODO: add a test if they have touched in the past :D
 func hailstone_intersection_point(hs1, hs2 *HailStone) (x, y float32, err error) {
 
 	if hs1.x_mult-hs2.x_mult == 0 {
